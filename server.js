@@ -32,12 +32,12 @@ const players = [
       {
         id: "1_1",
         text: "private_cards 1",
-        imageSrc: "http://localhost/img/magic_mirror.png",
+        imageSrc: "http://localhost/img/doors_class_halfling_1.jpg",
       },
       {
         id: "1_2",
         text: "private_cards 2",
-        imageSrc: "http://localhost/img/dragon_lance.png",
+        imageSrc: "http://localhost/img/doors_class_thief_1.jpg",
       },
       {
         id: "1_3",
@@ -49,17 +49,12 @@ const players = [
       {
         id: "2_1",
         text: "cards_on_board 1",
-        imageSrc: "http://localhost/img/magic_mirror.png",
+        imageSrc: "http://localhost/img/doors_class_halfling_2.jpg",
       },
       {
         id: "2_2",
         text: "cards_on_board 2",
-        imageSrc: "http://localhost/img/magic_mirror.png",
-      },
-      {
-        id: "2_3",
-        text: "cards_on_board 3",
-        imageSrc: "http://localhost/img/magic_mirror.png",
+        imageSrc: "http://localhost/img/doors_class_warrior_1.jpg",
       },
     ],
   },
@@ -71,34 +66,48 @@ const players = [
       {
         id: "1_4",
         text: "private_cards 4",
-        imageSrc: "http://localhost/img/magic_mirror.png",
+        imageSrc: "http://localhost/img/oscillococcinum.png",
       },
       {
         id: "1_5",
         text: "private_cards 5",
-        imageSrc: "http://localhost/img/magic_mirror.png",
+        imageSrc: "http://localhost/img/doors_class_warrior_2.jpg",
       },
       {
         id: "1_6",
         text: "private_cards 6",
-        imageSrc: "http://localhost/img/magic_mirror.png",
+        imageSrc: "http://localhost/img/tigers_blood.png",
       },
     ],
     cards_on_board: [
       {
         id: "2_4",
         text: "cards_on_board 4",
-        imageSrc: "http://localhost/img/magic_mirror.png",
+        imageSrc: "http://localhost/img/doors_class_wizard_1.jpg",
       },
       {
         id: "2_5",
-        text: "cards_on_board 5",
-        imageSrc: "http://localhost/img/magic_mirror.png",
+        text: '<h1 class="cardName">Вор</h1><p class="header">Подрезка:</p>Можешь скинуть 1 карту, чтобы подрезать другого игрока (-2 в бою). Можешь делать это только один раз в отношении одной жертвы в одном бою; если 2 игрока совместно валят мостра, можешь подрезать их обоих.\n<p class="header">Кража:</p> Можешь скинуть 1 карту, чтобы попытаться стырить маленькую шмотку у другого игрока. Брось кубик: 4 и больше - удачная кража, иначе тебя лупят, и ты теряешь 1 Уровень.',
+        imageSrc: "http://localhost/img/doors_class_thief_2.jpg",
       },
+    ],
+  },
+  {
+    name: "Максим",
+    id: "Максим",
+    level: 4,
+    private_cards: [
+      {
+        id: "1_7",
+        text: "private_cards 4",
+        imageSrc: "http://localhost/img/doors_class_thief_3.jpg",
+      },
+    ],
+    cards_on_board: [
       {
         id: "2_6",
-        text: "cards_on_board 6",
-        imageSrc: "http://localhost/img/magic_mirror.png",
+        text: '<h1 class="cardName">Волшебник</h1><p class="header">Заклинание Полёта:</p> Можешь сбросить до 3 карт после броска на Смывку; каждая даёт +1 к Смывке.\n<p class="header">Заклинание Усмирения:</p> Можешь сбросить всю **руку** (мин. 3 карты), чтобы усмирить одного монстра и не драться с ним; ты получаешь только его Сокровища, но не Уровень. Если в бою учавствуют монстры, с ними придётся воевать.',
+        imageSrc: "http://localhost/img/doors_class_wizard_2.jpg",
       },
     ],
   },
@@ -110,8 +119,13 @@ const mainBoard = {
   cards: [
     {
       id: 777,
-      text: "Main board 1",
+      text: '<h1 class="cardName">Драконье копьё</h1><p>Бонус +2</p><p>Одноручное</p><p>Стоимость: <span class="price">200</span> голды.</p>',
       imageSrc: "http://localhost/img/dragon_lance.png",
+    },
+    {
+      id: 776,
+      text: "Main board 2",
+      imageSrc: "http://localhost/img/doors_class_warrior_3.jpg",
     },
   ],
 };
