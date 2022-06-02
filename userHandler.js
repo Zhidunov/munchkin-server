@@ -1,5 +1,5 @@
 export const registerUserHandler = ({ players, mainBoard, socket }) => {
-  const joinUser = ({ roomId, userName }) => {
+  const movedCard = ({ roomId, userName }) => {
     socket.join(roomId);
     rooms.get(roomId)?.get("users")?.set(socket.id, userName);
     const users = [...rooms.get(roomId)?.get("users")?.values()];
@@ -25,7 +25,7 @@ export const registerUserHandler = ({ players, mainBoard, socket }) => {
     });
   };
 
-  socket.on("ROOM:JOIN", joinUser);
+  socket.on("GAME:MOVED_CARD", movedCard);
   socket.on("ROOM:SEND_MESSAGE", sendMessage);
   socket.on("disconnect", disconnectUser);
 };

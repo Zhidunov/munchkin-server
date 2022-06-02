@@ -3,6 +3,23 @@ import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { registerUserHandler } from "./userHandler";
+import {
+  doorsClassHalfling1,
+  doorsClassHalfling2,
+  doorsClassThief1,
+  doorsClassThief2,
+  doorsClassWarrior1,
+  doorsClassWarrior2,
+  doorsClassWarrior3,
+  doorsClassWizard1,
+  doorsClassWizard2,
+  dragonLance,
+  magicMirror,
+  oscillococcinum,
+  tigersBlood,
+  ancient,
+} from "./mockCards";
+import { CLASSES, RACES } from "./constants";
 
 const app = express();
 
@@ -21,149 +38,127 @@ const io = new Server(server, {
 const PORT = process.env.PORT || 80;
 
 const rooms = new Map();
-
-// const players = new Map();
-const players = [
-  {
-    name: "Никита",
-    id: "Никита",
-    level: 1,
-    private_cards: [
-      {
-        id: "1_1",
-        text: "private_cards 1",
-        imageSrc: "http://localhost/img/doors_class_halfling_1.jpg",
-      },
-      {
-        id: "1_2",
-        text: "private_cards 2",
-        imageSrc: "http://localhost/img/doors_class_thief_1.jpg",
-      },
-      {
-        id: "1_3",
-        text: "private_cards 3",
-        imageSrc: "http://localhost/img/magic_mirror.png",
-      },
-    ],
-    cards_on_board: [
-      {
-        id: "2_1",
-        text: "cards_on_board 1",
-        imageSrc: "http://localhost/img/doors_class_halfling_2.jpg",
-      },
-      {
-        id: "2_2",
-        text: "cards_on_board 2",
-        imageSrc: "http://localhost/img/doors_class_warrior_1.jpg",
-      },
-    ],
+rooms.set("1", {
+  room_id: "1",
+  password: "password",
+  main_board: {
+    cards_on_board: [dragonLance, ancient],
+    decks_of_cards: {
+      doors_deck: [doorsClassHalfling1, doorsClassWizard1],
+      treasures_deck: [magicMirror],
+      discarded_doors: [doorsClassWizard2],
+      discarded_treasures: [oscillococcinum],
+    },
   },
-  {
-    name: "Женя",
-    id: "Женя",
-    level: 7,
-    private_cards: [
-      {
-        id: "1_4",
-        text: "private_cards 4",
-        imageSrc: "http://localhost/img/oscillococcinum.png",
-      },
-      {
-        id: "1_5",
-        text: "private_cards 5",
-        imageSrc: "http://localhost/img/doors_class_warrior_2.jpg",
-      },
-      {
-        id: "1_6",
-        text: "private_cards 6",
-        imageSrc: "http://localhost/img/tigers_blood.png",
-      },
-    ],
-    cards_on_board: [
-      {
-        id: "2_4",
-        text: "cards_on_board 4",
-        imageSrc: "http://localhost/img/doors_class_wizard_1.jpg",
-      },
-      {
-        id: "2_5",
-        text: '<h1 class="cardName">Вор</h1><p class="header">Подрезка:</p>Можешь скинуть 1 карту, чтобы подрезать другого игрока (-2 в бою). Можешь делать это только один раз в отношении одной жертвы в одном бою; если 2 игрока совместно валят мостра, можешь подрезать их обоих.\n<p class="header">Кража:</p> Можешь скинуть 1 карту, чтобы попытаться стырить маленькую шмотку у другого игрока. Брось кубик: 4 и больше - удачная кража, иначе тебя лупят, и ты теряешь 1 Уровень.',
-        imageSrc: "http://localhost/img/doors_class_thief_2.jpg",
-      },
-    ],
-  },
-  {
-    name: "Максим",
-    id: "Максим",
-    level: 4,
-    private_cards: [
-      {
-        id: "1_7",
-        text: "private_cards 4",
-        imageSrc: "http://localhost/img/doors_class_thief_3.jpg",
-      },
-    ],
-    cards_on_board: [
-      {
-        id: "2_6",
-        text: '<h1 class="cardName">Волшебник</h1><p class="header">Заклинание Полёта:</p> Можешь сбросить до 3 карт после броска на Смывку; каждая даёт +1 к Смывке.\n<p class="header">Заклинание Усмирения:</p> Можешь сбросить всю **руку** (мин. 3 карты), чтобы усмирить одного монстра и не драться с ним; ты получаешь только его Сокровища, но не Уровень. Если в бою учавствуют монстры, с ними придётся воевать.',
-        imageSrc: "http://localhost/img/doors_class_wizard_2.jpg",
-      },
-    ],
-  },
-];
-
-// const mainBoard = new Map();
-const mainBoard = {
-  name: "Main board",
-  cards: [
+  players: [
     {
-      id: 777,
-      text: '<h1 class="cardName">Драконье копьё</h1><p>Бонус +2</p><p>Одноручное</p><p>Стоимость: <span class="price">200</span> голды.</p>',
-      imageSrc: "http://localhost/img/dragon_lance.png",
+      name: "Никита",
+      id: "user_1",
+      level: 1,
+      class: CLASSES.THIEF,
+      race: RACES.HUMAN,
+      private_hand: [doorsClassHalfling2, doorsClassWarrior1],
+      public_hand: [doorsClassThief1],
     },
     {
-      id: 776,
-      text: "Main board 2",
-      imageSrc: "http://localhost/img/doors_class_warrior_3.jpg",
+      name: "Максим",
+      id: "user_2",
+      level: 3,
+      class: CLASSES.CLERIC,
+      race: RACES.ELF,
+      private_hand: [doorsClassThief2, doorsClassHalfling2, doorsClassWarrior1],
+      public_hand: [tigersBlood],
+    },
+    {
+      name: "Женя",
+      id: "user_3",
+      level: 7,
+      class: CLASSES.WARRIOR,
+      race: RACES.HUMAN,
+      private_hand: [doorsClassWarrior2],
+      public_hand: [doorsClassWarrior3],
     },
   ],
-};
+});
 
-app.get("/rooms/:id", (req, res) => {
-  const { id: roomId } = req.params;
+app.get("/rooms", (req, res) => {
+  const userId = req.query.userId;
+  const roomId = req.query.roomId;
+
+  const otherPlayers = rooms
+    .get(roomId)
+    .players.filter((pl) => pl.id !== userId);
+
+  const players = otherPlayers.map((pl) => ({
+    name: pl.name,
+    id: pl.id,
+    level: pl.level,
+    class: pl.class,
+    race: pl.race,
+    cards_in_hand: pl.private_hand?.length,
+  }));
 
   const response = rooms.has(roomId)
     ? {
-        users: [...rooms.get(roomId).get("users").values()],
-        messages: [...rooms.get(roomId).get("messages").values()],
+        players,
+        main_board: rooms.get(roomId).main_board,
       }
-    : { users: [], messages: [] };
+    : { players: [], main_board: {} };
   res.json(response);
 });
 
-app.get("/players", (req, res) => {
-  // const { id: roomId } = req.params;
-  res.json({ players });
-});
-app.get("/mainboard", (req, res) => {
-  // const { id: roomId } = req.params;
-  res.json(mainBoard);
+app.get("/boards", (req, res) => {
+  const userId = req.query.userId;
+  const roomId = req.query.roomId;
+
+  const otherPlayers = rooms
+    .get(roomId)
+    .players.filter((pl) => pl.id !== userId);
+
+  const response = {
+    other_players_stuff: otherPlayers.map((pl) => ({
+      id: pl.id,
+      cards: pl.public_hand,
+      cards_in_hand: pl.private_hand?.length,
+    })),
+  };
+  res.json(response);
 });
 
-app.post("/rooms", (req, res) => {
-  const { userName, roomId } = req.body;
-  if (!rooms.has(roomId)) {
-    rooms.set(
-      roomId,
-      new Map([
-        ["users", new Map()],
-        ["messages", []],
-      ])
-    );
-  }
-  res.send();
+app.get("/user", (req, res) => {
+  const userId = req.query.userId;
+  const roomId = req.query.roomId;
+
+  const currentUser = rooms.get(roomId).players.find((pl) => pl.id === userId);
+
+  const response = {
+    current_user: currentUser,
+  };
+  res.json(response);
 });
+
+// app.get("/players", (req, res) => {
+//   // const { id: roomId } = req.params;
+//   res.json({ players });
+// });
+// app.get("/mainboard", (req, res) => {
+//   // const { id: roomId } = req.params;
+//   res.json(mainBoard);
+// });
+
+// app.post("/rooms", (req, res) => {
+//   const { userName, roomId } = req.body;
+//   if (!rooms.has(roomId)) {
+//     rooms.set(
+//       roomId,
+//       new Map([
+//         ["users", new Map()],
+//         ["messages", []],
+//       ])
+//     );
+//   }
+//   res.send();
+// });
 
 const onConnection = (socket) => {
   // registerUserHandler({ players, mainBoard, socket });
