@@ -81,13 +81,13 @@ rooms.set("1", {
   ],
 });
 
-app.get("/rooms", (req, res) => {
-  const userId = req.query.userId;
+app.get("/room", (req, res) => {
+  const userName = req.query.userName;
   const roomId = req.query.roomId;
 
   const otherPlayers = rooms
     .get(roomId)
-    .players.filter((pl) => pl.id !== userId);
+    .players.filter((pl) => pl.name !== userName);
 
   const players = otherPlayers.map((pl) => ({
     name: pl.name,
@@ -108,12 +108,12 @@ app.get("/rooms", (req, res) => {
 });
 
 app.get("/boards", (req, res) => {
-  const userId = req.query.userId;
+  const userName = req.query.userName;
   const roomId = req.query.roomId;
 
   const otherPlayers = rooms
     .get(roomId)
-    .players.filter((pl) => pl.id !== userId);
+    .players.filter((pl) => pl.name !== userName);
 
   const response = {
     other_players_stuff: otherPlayers.map((pl) => ({
@@ -126,10 +126,12 @@ app.get("/boards", (req, res) => {
 });
 
 app.get("/user", (req, res) => {
-  const userId = req.query.userId;
+  const userName = req.query.userName;
   const roomId = req.query.roomId;
 
-  const currentUser = rooms.get(roomId).players.find((pl) => pl.id === userId);
+  const currentUser = rooms
+    .get(roomId)
+    .players.find((pl) => pl.name === userName);
 
   const response = {
     current_user: currentUser,
@@ -137,35 +139,41 @@ app.get("/user", (req, res) => {
   res.json(response);
 });
 
-// app.get("/players", (req, res) => {
-//   // const { id: roomId } = req.params;
-//   res.json({ players });
-// });
-// app.get("/mainboard", (req, res) => {
-//   // const { id: roomId } = req.params;
-//   res.json(mainBoard);
-// });
-
-// app.post("/rooms", (req, res) => {
-//   const { userName, roomId } = req.body;
-//   if (!rooms.has(roomId)) {
-//     rooms.set(
-//       roomId,
-//       new Map([
-//         ["users", new Map()],
-//         ["messages", []],
-//       ])
-//     );
-//   }
-//   res.send();
-// });
+app.post("/rooms", (req, res) => {
+  const { userName, roomId, password } = req.body;
+  console.log("🚀 ~ app.post ~ rooms.has(roomId)", rooms.has(roomId));
+  if (!rooms.has(roomId)) {
+    rooms.set(roomId, {
+      room_id: roomId,
+      password: password,
+      main_board: {
+        cards_on_board: [dragonLance, ancient],
+        decks_of_cards: {
+          doors_deck: [doorsClassHalfling1, doorsClassWizard1],
+          treasures_deck: [magicMirror],
+          discarded_doors: [doorsClassWizard2],
+          discarded_treasures: [oscillococcinum],
+        },
+      },
+      players: [
+        {
+          name: userName,
+          id: "user_random" + new Date().getTime(),
+          level: 1,
+          class: null,
+          race: RACES.HUMAN,
+          private_hand: [],
+          public_hand: [],
+        },
+      ],
+    });
+  }
+  res.send();
+});
 
 const onConnection = (socket) => {
-  // registerUserHandler({ players, mainBoard, socket });
+  registerUserHandler({ rooms, socket, io });
 };
-// const onConnection = (socket) => {
-//   registerUserHandler(rooms, socket);
-// };
 
 io.on("connection", onConnection);
 
